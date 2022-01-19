@@ -1,0 +1,8 @@
+.selection {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 1px solid rgb(0, 119, 255);
+  background-color: rgba(9, 101, 240, 0.1);
+  pointer-events: none;
+}

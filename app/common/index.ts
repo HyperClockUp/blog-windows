@@ -1,0 +1,1 @@
+export const commonAPIToken = 'WKQv7QmfsQ6v6P8Tm407cR5e';
