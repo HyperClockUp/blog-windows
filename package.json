@@ -1,0 +1,9 @@
+{
+  "name": "blog-window",
+  "version": "0.0.1",
+  "description": "a blog for chengfx",
+  "main": "index.ts",
+  "repository": "git@github.com:HyperClockUp/blog-windows.git",
+  "author": "chengfx",
+  "license": "MIT"
+}
