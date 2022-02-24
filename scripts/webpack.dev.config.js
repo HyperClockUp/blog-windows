@@ -1,5 +1,7 @@
 const path = require('path');
-const Webpackbar = require('webpackbar');
+const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const WebpackBar = require('webpackbar');
+// const ESLintPlugin = require('eslint-webpack-plugin');
 const { merge } = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.config');
 const { PROJECT_PATH, SERVER_HOST, SERVER_PORT } = require('./CONSTANT');
@@ -25,5 +27,5 @@ module.exports = merge(baseWebpackConfig, {
     hot: true,
     historyApiFallback: true,
   },
-  plugins: [new Webpackbar()]
-})
+  plugins: [new WebpackBar(), new ReactRefreshPlugin()],
+});

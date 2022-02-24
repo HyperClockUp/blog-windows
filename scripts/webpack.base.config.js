@@ -8,21 +8,31 @@ const { PROJECT_PATH, isDevelopment, isProduction } = require('./CONSTANT');
 const getCSSLoaders = () => {
   const loaders = [];
   loaders.push(
-    isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-    {
+    isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader, {
       loader: 'css-loader',
       options: {
         modules: {
-          localIdentName: "[local]--[hash:base64:5]"
+          localIdentName: "[name]__[local]__[hash:base64:5]",
+          mode: (resourcePath) => {
+            if (/pure.css$/i.test(resourcePath)) {
+              return "pure";
+            }
+
+            if (/global.css$/i.test(resourcePath)) {
+              return "global";
+            }
+
+            return "local";
+          },
         },
         sourceMap: isDevelopment,
       }
     }
   );
 
-  isProduction && loaders.push({
+  loaders.push({
     loader: 'postcss-loader',
-    options: {
+    options: isProduction ? {
       postcssOptions: {
         plugins: [
           [
@@ -35,11 +45,11 @@ const getCSSLoaders = () => {
           ]
         ]
       }
-    }
+    } : undefined
   });
 
   return loaders;
-}
+};
 
 module.exports = {
   entry: {
@@ -49,8 +59,7 @@ module.exports = {
     path: path.resolve(PROJECT_PATH, './dist'),
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.css$/,
         use: [...getCSSLoaders()],
       },
@@ -69,7 +78,7 @@ module.exports = {
       {
         test: /\.(tsx?|js)$/,
         loader: 'babel-loader',
-        options: { cacheDirectory: true },
+        options: { cacheDirectory: true, plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean) },
         exclude: /node_modules/,
       },
       {
@@ -93,17 +102,15 @@ module.exports = {
       template: path.resolve(PROJECT_PATH, './public', './index.html')
     }),
     new CopyPlugin({
-      patterns: [
-        {
-          from: "*",
-          to: path.resolve(PROJECT_PATH, './dist/public'),
-          globOptions: {
-            dot: true,
-            gitignore: true,
-            ignore: ["**/index.html"],
-          },
+      patterns: [{
+        from: "*",
+        to: path.resolve(PROJECT_PATH, './dist/public'),
+        globOptions: {
+          dot: true,
+          gitignore: true,
+          ignore: ["**/index.html"],
         },
-      ],
+      }, ],
       options: {
         concurrency: 100,
       },
@@ -118,5 +125,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.json'],
+    modules: [PROJECT_PATH, 'node_modules']
   },
 };

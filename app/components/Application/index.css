@@ -1,0 +1,36 @@
+.applicationContainer {
+  position: absolute;
+}
+
+.applicationHeader {
+  width: 60vw;
+  height: 30px;
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.8);
+  align-items: center;
+}
+
+.headerIcon {
+  height: 20px;
+  width: 20px;
+  margin: 0 5px;
+}
+
+.headerTitle {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.headerButtons {
+  flex-grow: 1;
+  flex-shrink: 0;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.applicationBody {
+  width: 60vw;
+  height: fit-content;
+  min-height: 200px;
+  background-color: #FFF;
+}

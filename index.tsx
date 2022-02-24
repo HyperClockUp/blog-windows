@@ -5,5 +5,3 @@ import App from './app/App';
 const container = document.querySelector('#root');
 
 ReactDOM.render(<App />, container);
-
-module.hot?.accept();

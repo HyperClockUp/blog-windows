@@ -1,0 +1,25 @@
+.appIconContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.appIcon {
+  width: 2vw;
+  height: 2vw;
+}
+
+.appName {
+  width: 100%;
+  text-align: center;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: white;
+  margin: 0;
+  margin-top: 10px;
+  font-size: 12px;
+}
