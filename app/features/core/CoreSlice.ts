@@ -1,3 +1,4 @@
+import { getProcessesByName } from "./../../utils/storeUtils";
 // process center, to manager all process here
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getProgramById, getProcessById } from "../../utils/storeUtils";
@@ -7,7 +8,7 @@ import { processMsg } from "../message/process";
 import { programMsg } from "../message/program";
 import { rootProcess } from "./Process";
 import ProgramClass from "./Program";
-import { WindowsState } from "../../types/Windows";
+import { WindowsShowMode, WindowsState } from "../../types/Windows";
 
 const zIndex = (() => {
   let _zIndex = 0;
@@ -38,12 +39,25 @@ export const coreSlice = createSlice({
     createParentProcess(state, action: PayloadAction<Program["id"]>) {
       const programId = action.payload;
       const targetProgram = getProgramById(programId, state);
+      const targetProcess = getProcessesByName(targetProgram.name, state);
+      if (targetProcess.length) {
+        coreSlice.caseReducers.moveWindowToTop(state, {
+          payload: targetProcess[0].id,
+          type: "core/moveWindowToTop",
+        });
+        return;
+      }
       state.processId += 1;
       const newProcess: Process = {
         programId,
         name: targetProgram.name,
         id: state.processId,
         parent: rootProcess,
+      };
+      state.windows[newProcess.id] = {
+        showMode: WindowsShowMode.NORMAL,
+        visible: true,
+        zIndex: zIndex(),
       };
       state.processes.push(newProcess);
     },
@@ -59,6 +73,11 @@ export const coreSlice = createSlice({
         name: parentProcess.name,
         id: state.processId,
         parent: parentProcess,
+      };
+      state.windows[newProcess.id] = {
+        showMode: WindowsShowMode.NORMAL,
+        visible: true,
+        zIndex: zIndex(),
       };
       state.processes.push(newProcess);
     },
@@ -77,7 +96,24 @@ export const coreSlice = createSlice({
     },
     moveWindowToTop(state, action: PayloadAction<Process["id"]>) {
       const processId = action.payload;
+      const maxZIndex = Math.max(
+        ...Object.values(state.windows).map((window) => window.zIndex)
+      );
+      if (maxZIndex === state.windows[processId].zIndex) {
+        return;
+      }
       state.windows[processId].zIndex = zIndex();
+    },
+    setWindowShowMode(
+      state,
+      action: PayloadAction<{ id: Process["id"]; showMode: WindowsShowMode }>
+    ) {
+      const { id, showMode } = action.payload;
+      state.windows[id].showMode = showMode;
+    },
+    switchWindowVisible(state, action: PayloadAction<Process["id"]>) {
+      const processId = action.payload;
+      state.windows[processId].visible = !state.windows[processId].visible;
     },
     installProgram(state, action: PayloadAction<Program>) {
       const program = action.payload;
@@ -113,6 +149,8 @@ export const {
   createChildProcess,
   killProcess,
   moveWindowToTop,
+  setWindowShowMode,
+  switchWindowVisible,
   installProgram,
   uninstallProgram,
   batchInstallProgram,

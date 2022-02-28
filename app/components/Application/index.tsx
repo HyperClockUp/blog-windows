@@ -23,6 +23,10 @@ const Application = (props: ApplicationProps) => {
 
   const windowsState = useAppSelector((state) => state.core.windows);
 
+  const curWindowState = React.useMemo(() => {
+    return windowsState[process.id];
+  }, [windowsState, process.id]);
+
   const dispatch = useAppDispatch();
 
   const mouseDownHandler = React.useCallback((e: MouseEvent) => {
@@ -39,7 +43,6 @@ const Application = (props: ApplicationProps) => {
     isDragging.current = true;
     startDragPosition.current =
       applicationDOMRef.current?.getBoundingClientRect();
-    e.stopPropagation();
   }, []);
 
   const mouseUpHandler = React.useCallback((e: MouseEvent) => {
@@ -60,12 +63,15 @@ const Application = (props: ApplicationProps) => {
     });
   }, []);
 
-  const containerLoadedHandler = React.useCallback(() => {
-    if (!applicationDOMRef.current) {
-      return;
-    }
-    setPosition(applicationDOMRef.current.getBoundingClientRect());
-  }, []);
+  const containerLoadedHandler = React.useCallback(
+    (e: React.SyntheticEvent<HTMLDivElement, Event>) => {
+      if (!applicationDOMRef.current || e.currentTarget !== e.target) {
+        return;
+      }
+      setPosition(applicationDOMRef.current.getBoundingClientRect());
+    },
+    []
+  );
 
   const closeBtnHandler = React.useCallback(() => {
     if (!process) {
@@ -74,10 +80,13 @@ const Application = (props: ApplicationProps) => {
     dispatch(killProcess(process.id));
   }, [dispatch, process]);
 
-  const moveTopHandler = React.useCallback(()=>{
-    dispatch(moveWindowToTop(process.id));
-    console.log('1111');
-  },[dispatch, process.id]);
+  const moveTopHandler = React.useCallback(
+    (e) => {
+      dispatch(moveWindowToTop(process.id));
+      e.stopPropagation();
+    },
+    [dispatch, process.id]
+  );
 
   React.useEffect(() => {
     window.addEventListener("mouseup", mouseUpHandler, true);
@@ -96,11 +105,16 @@ const Application = (props: ApplicationProps) => {
       ref={applicationDOMRef}
       style={{
         ...position,
-        zIndex: windowsState[process.id]?.zIndex,
+        display: curWindowState.visible ? "block" : "none",
+        zIndex: curWindowState.zIndex,
       }}
       onLoad={containerLoadedHandler}
       onMouseDown={moveTopHandler}
       onTouchStart={moveTopHandler}
+      onContextMenu={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+      }}
     >
       <header
         className={styles.applicationHeader}

@@ -12,7 +12,7 @@ export type ApplicationEventType =
 export type ApplicationEventHandler = (event: ApplicationEventType) => void;
 
 export interface Application {
-  app: () => JSX.Element | null;
+  app: React.ReactChild;
   context: Context;
   handler: ApplicationEventHandler;
 }

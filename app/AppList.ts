@@ -6,15 +6,16 @@ import systemSetting from "./applications/SystemSettings";
 import browserIcon from "./assets/images/Edge.svg";
 import browser from "./applications/SystemBrowser";
 
-const programIds = () => {
+import helloWorldIcon from "./assets/images/resume.svg";
+import helloWorld from './applications/HelloWorld';
+
+const ids = (() => {
   let _id = 1;
   return () => {
     _id += 1;
     return _id;
   };
-};
-
-const ids = programIds();
+})();
 
 export const SystemSettingsProgram: Program = {
   id: ids(),
@@ -32,13 +33,18 @@ export const SystemBrowserProgram: Program = {
   app: browser,
 };
 
+export const HelloWorldProgram: Program = {
+  id: ids(),
+  name: "hello-world",
+  title: "Hello World",
+  icon: helloWorldIcon,
+  app: helloWorld,
+};
+
 const AppList: Record<string, Program> = {
   [SystemSettingsProgram.name]: SystemSettingsProgram,
   [SystemBrowserProgram.name]: SystemBrowserProgram,
-};
-
-export const getAppById = (id: Program["id"]) => {
-  return Object.values(AppList).find((app) => app.id === id) || null;
+  [HelloWorldProgram.name]: HelloWorldProgram,
 };
 
 export default AppList;

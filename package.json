@@ -7,6 +7,7 @@
   "author": "chengfx",
   "license": "MIT",
   "scripts": {
+    "checkExist": "lsof -i:8080",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --hot --config ./scripts/webpack.dev.config.js",
     "build": "cross-env NODE_ENV=production webpack --config ./scripts/webpack.prod.config.js"
   },
@@ -58,14 +59,21 @@
     "webpackbar": "^5.0.2"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^2.1.1",
     "@reduxjs/toolkit": "^1.7.2",
+    "assert": "^2.0.0",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^6.0.3",
+    "highlight.js": "^11.4.0",
     "nanoid": "^3.2.0",
     "postcss": "^8.4.6",
     "postcss-px-to-viewport": "^1.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-markdown": "^8.0.0",
     "react-redux": "^7.2.6",
     "react-router": "^6.2.1",
-    "react-router-dom": "^6.2.1"
+    "react-router-dom": "^6.2.1",
+    "remark-gfm": "^3.0.1"
   }
 }

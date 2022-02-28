@@ -4,17 +4,17 @@ import { Application } from "../../types/Application";
 
 const context: Context = [
   {
-    title: "系统设置",
-    handler: () => alert(navigator.userAgent),
+    title: "Hello World",
+    handler: () => window.alert("hello world"),
   },
 ];
 
 const App = React.lazy(() => import("./render"));
 
-const SystemSettingApp: Application = {
+const SystemBrowserApp: Application = {
   app: <App />,
   context,
   handler: console.log,
 };
 
-export default SystemSettingApp;
+export default SystemBrowserApp;

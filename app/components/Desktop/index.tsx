@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import TaskBar from "./TaskBar";
 import styles from "./index.css";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -29,24 +29,34 @@ const Desktop = () => {
     [number, number]
   >([0, 0]);
 
+  // 右键选中的程序
   const [rightClickedProgram, setRightClickedProgram] = React.useState<
     Program["id"] | null
   >(null);
 
+  // 选中态程序
   const [activeProgram, setActiveProgram] = React.useState<Program["id"][]>([]);
 
+  // 是否展示右键菜单
   const [showWindowsContext, setShowWindowsContext] =
     React.useState<boolean>(false);
 
+  // appIcon的DOM列表
   const appIconDOMRefList = React.useRef<Record<string, HTMLDivElement | null>>(
     {}
   );
+
+  // appIcon的位置列表
   const appIconBoundingList = React.useRef<Record<string, DOMRect>>({});
 
+  // 已经安装的程序列表
   const installedProgramList = React.useMemo(() => {
     return Object.values(installedPrograms);
   }, [installedPrograms]);
 
+  /**
+   * 处理右键
+   */
   const rightClickHandler = React.useCallback(
     (
       e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -58,6 +68,9 @@ const Desktop = () => {
     []
   );
 
+  /**
+   * 处理选中事件
+   */
   const selectionHandler = React.useCallback((rect) => {
     const activeApp: Program["id"][] = [];
     Reflect.ownKeys(appIconBoundingList.current).forEach((programId) => {
@@ -77,10 +90,12 @@ const Desktop = () => {
         activeApp.push(Number(programId) as Program["id"]);
       }
     });
-    console.log({ activeApp });
     setActiveProgram(activeApp);
   }, []);
 
+  /**
+   * 所有的程序
+   */
   const AllPrograms = React.useMemo(() => {
     return installedProgramList.map((program) => {
       return (
@@ -118,17 +133,29 @@ const Desktop = () => {
     });
   }, [activeProgram, dispatch, installedProgramList, rightClickHandler]);
 
+  /**
+   * 所有的应用窗口
+   */
   const AllApplications = React.useMemo(() => {
     return runningProcesses.map((process) => {
       const AppInfo = AppList[process.name];
+      if (!AppInfo.app) {
+        return null;
+      }
+      const App = AppInfo.app.app;
       return (
         <Application key={process.id} program={AppInfo} process={process}>
-          {AppInfo.app?.app()}
+          <Suspense fallback={""}>
+            {App}
+          </Suspense>
         </Application>
       );
     });
   }, [runningProcesses]);
 
+  /**
+   * 背景图片
+   */
   const BackgroundImage = React.useMemo(() => {
     if (!backgroundImage) {
       return null;
@@ -141,6 +168,9 @@ const Desktop = () => {
     );
   }, [backgroundImage]);
 
+  /**
+   * 桌面点击事件
+   */
   const desktopClickHandler: React.MouseEventHandler = React.useCallback(
     (e) => {
       if (e.button === 0) {
@@ -150,10 +180,13 @@ const Desktop = () => {
     []
   );
 
+  /**
+   * 桌面鼠标按下事件
+   */
   const desktopMouseDownHandler: React.MouseEventHandler = React.useCallback(
     (e) => {
       if (e.button === 0) {
-        setShowWindowsContext(false);
+        // setShowWindowsContext(false);
         setActiveProgram([]);
       }
     },

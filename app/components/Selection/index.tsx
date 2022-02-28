@@ -48,7 +48,7 @@ const Selection = (props: SelectionProps) => {
     (e: MouseEvent) => {
       isDragging.current = false;
       const [x, y] = startDragPosition.current;
-      if (x === e.clientX && y === e.clientY || !onSelect) {
+      if ((x === e.clientX && y === e.clientY) || !onSelect) {
         return;
       }
       const { left, top, height, width } = selectionStyle;

@@ -2,16 +2,15 @@ import React from "react";
 import styles from "./index.css";
 import { Context } from "../../types/Context";
 import { Program } from "../../types/Program";
-import { getAppById } from "../../AppList";
+import { getAppById } from "../../utils/storeUtils";
 
 interface WindowsContextProps {
   programId?: Program["id"] | null;
   position: [number, number];
   show?: boolean;
   menus?: Context;
+  onClick?: () => void;
 }
-
-
 
 const defaultMenus: Context = [
   {
@@ -21,7 +20,7 @@ const defaultMenus: Context = [
 ];
 
 const WindowsContext = (props: WindowsContextProps) => {
-  const { programId, position, show, menus = defaultMenus } = props;
+  const { programId, position, show, menus = defaultMenus, onClick } = props;
 
   const context = React.useMemo(() => {
     if (!programId) {
@@ -37,6 +36,7 @@ const WindowsContext = (props: WindowsContextProps) => {
     <ul
       className={styles.menuContainer}
       style={{ left: position[0], top: position[1] }}
+      onClick={onClick}
     >
       {context.map((item) => {
         return (

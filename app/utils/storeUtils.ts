@@ -3,6 +3,7 @@ import { store } from "./../store";
 import { Program } from "./../types/Program";
 import { CoreState } from "../features/core/CoreSlice";
 import { Draft } from "@reduxjs/toolkit";
+import AppList from "../AppList";
 
 export const getProgramById = (id: Program["id"], state?: Draft<CoreState>) => {
   const core = state || store.getState().core;
@@ -33,3 +34,8 @@ export const getProcessesByName = (
     (process) => process.name === name
   );
 };
+
+export const getAppById = (id: Program["id"]) => {
+  return Object.values(AppList).find((app) => app.id === id) || null;
+};
+

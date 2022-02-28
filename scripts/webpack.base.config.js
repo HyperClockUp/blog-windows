@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const Webpack = require('webpack');
 const { PROJECT_PATH, isDevelopment, isProduction } = require('./CONSTANT');
 
 const getCSSLoaders = () => {
@@ -91,7 +92,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2?)$/,
+        test: /\.(eot|svg|ttf|woff|woff2|md?)$/,
         type: 'asset/resource',
       },
     ]
@@ -125,6 +126,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.json'],
-    modules: [PROJECT_PATH, 'node_modules']
+    modules: [PROJECT_PATH, 'node_modules'],
   },
 };

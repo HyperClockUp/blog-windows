@@ -1,7 +1,13 @@
 import React from "react";
 import AppList from "../../../AppList";
+import {
+  moveWindowToTop,
+  switchWindowVisible,
+} from "../../../features/core/CoreSlice";
+import { rootProcess } from "../../../features/core/Process";
 import { setShowWindowsMenu } from "../../../features/settings/SettingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { classNameJoiner } from "../../../utils";
 import WindowsMenu from "../../WindowsMenu";
 import styles from "./index.css";
 
@@ -17,11 +23,25 @@ const TaskBar = () => {
 
   const runningProcesses = useAppSelector((state) => state.core.processes);
 
+  const windowsStates = useAppSelector((state) => state.core.windows);
+
   const AllProcesses = React.useMemo(() => {
     return runningProcesses.filter((process) => {
       return !!AppList[process.name];
     });
   }, [runningProcesses]);
+
+  const activeProcess = React.useMemo(() => {
+    let maxZIndex = 0;
+    let targetProcess = rootProcess;
+    AllProcesses.forEach((process) => {
+      if (windowsStates[process.id]?.zIndex > maxZIndex && windowsStates[process.id]?.visible) {
+        maxZIndex = windowsStates[process.id].zIndex;
+        targetProcess = process;
+      }
+    });
+    return targetProcess;
+  }, [AllProcesses, windowsStates]);
 
   const updateTime = React.useCallback(() => {
     const newTime = new Date();
@@ -54,9 +74,26 @@ const TaskBar = () => {
       <div className={styles.tasksContainer}>
         {AllProcesses.map((process) => {
           const AppInfo = AppList[process.name];
+          const windowState = windowsStates[process.id];
           return (
-            <div className={styles.taskItem} key={process.id}>
-              <img className={styles.taskIcon} src={AppInfo.icon} alt={AppInfo.title} />
+            <div
+              className={classNameJoiner(
+                styles.taskItem,
+                activeProcess.id === process.id &&
+                  windowState.visible &&
+                  styles.activeTaskItem
+              )}
+              key={process.id}
+              onClick={() => {
+                dispatch(moveWindowToTop(process.id));
+                dispatch(switchWindowVisible(process.id));
+              }}
+            >
+              <img
+                className={styles.taskIcon}
+                src={AppInfo.icon}
+                alt={AppInfo.title}
+              />
               <span className={styles.taskName}>{AppInfo.title}</span>
             </div>
           );
