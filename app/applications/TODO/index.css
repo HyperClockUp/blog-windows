@@ -1,0 +1,5 @@
+.todoListContainer {
+  max-height: 60vh;
+  padding: 5px 10px;
+  overflow: auto;
+}

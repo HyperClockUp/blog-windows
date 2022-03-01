@@ -1,0 +1,18 @@
+.systemSettingContainer {
+  width: 100%;
+  display: flex;
+}
+
+.settingItem {
+  width: 100%;
+  font-size: 14px;
+}
+
+.settingTitle {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.settingTitle::after {
+  content: ":";
+}

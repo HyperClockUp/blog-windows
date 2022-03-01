@@ -14,7 +14,10 @@ export interface ApplicationProps {
 
 const Application = (props: ApplicationProps) => {
   const { children, program, process } = props;
-  const [position, setPosition] = React.useState<React.CSSProperties>({});
+  const [position, setPosition] = React.useState<React.CSSProperties>({
+    top: 50 + 200 * Math.random(),
+    left: 50 + 200 * Math.random(),
+  });
   const isDragging = React.useRef(false);
   const startDragMousePosition = React.useRef<[number, number]>([0, 0]);
   const startDragPosition = React.useRef<React.CSSProperties>({});

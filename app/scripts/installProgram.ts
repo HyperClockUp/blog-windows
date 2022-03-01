@@ -1,4 +1,4 @@
-import { HelloWorldProgram, SystemBrowserProgram, SystemSettingsProgram } from "./../AppList";
+import { TodoProgram, SystemBrowserProgram, SystemSettingsProgram } from "./../AppList";
 import { batchInstallProgram } from "../features/core/CoreSlice";
 import { store } from "./../store";
 
@@ -10,7 +10,7 @@ export const initInstallProgram = () => {
     batchInstallProgram([
       SystemSettingsProgram,
       SystemBrowserProgram,
-      HelloWorldProgram,
+      TodoProgram,
     ])
   );
 };

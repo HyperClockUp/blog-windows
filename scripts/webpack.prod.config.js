@@ -1,10 +1,10 @@
 const { merge } = require('webpack-merge');
-const TerserPlugin = require("terser-webpack-plugin")
+const TerserPlugin = require("terser-webpack-plugin");
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const CSSMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const baseWebpackConfig = require('./webpack.base.config');
 const { PROJECT_PATH } = require('./CONSTANT');
-
+const path = require('path');
 
 
 module.exports = merge(baseWebpackConfig, {
@@ -34,4 +34,4 @@ module.exports = merge(baseWebpackConfig, {
       }),
     ]
   }
-})
+});

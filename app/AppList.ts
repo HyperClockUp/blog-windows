@@ -6,8 +6,8 @@ import systemSetting from "./applications/SystemSettings";
 import browserIcon from "./assets/images/Edge.svg";
 import browser from "./applications/SystemBrowser";
 
-import helloWorldIcon from "./assets/images/resume.svg";
-import helloWorld from './applications/HelloWorld';
+import todoIcon from "./assets/images/todo.svg";
+import todo from "./applications/TODO";
 
 const ids = (() => {
   let _id = 1;
@@ -33,18 +33,18 @@ export const SystemBrowserProgram: Program = {
   app: browser,
 };
 
-export const HelloWorldProgram: Program = {
+export const TodoProgram: Program = {
   id: ids(),
-  name: "hello-world",
-  title: "Hello World",
-  icon: helloWorldIcon,
-  app: helloWorld,
+  name: "todo",
+  title: "TODO",
+  icon: todoIcon,
+  app: todo,
 };
 
 const AppList: Record<string, Program> = {
   [SystemSettingsProgram.name]: SystemSettingsProgram,
   [SystemBrowserProgram.name]: SystemBrowserProgram,
-  [HelloWorldProgram.name]: HelloWorldProgram,
+  [TodoProgram.name]: TodoProgram,
 };
 
 export default AppList;

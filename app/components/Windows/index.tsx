@@ -1,18 +1,19 @@
-import React from 'react';
-import { initBackgroundImage } from '../../scripts/initSystem';
-import { initInstallProgram } from '../../scripts/installProgram';
-import Desktop from '../Desktop';
+import React from "react";
+import { bootstrap } from "../../scripts/bootstrap";
+import { initBackgroundImage } from "../../scripts/initSystem";
+import { initInstallProgram } from "../../scripts/installProgram";
+import Desktop from "../Desktop";
 
 const Windows = () => {
-
-  const init = React.useCallback(()=>{
+  const init = React.useCallback(() => {
     initInstallProgram();
     initBackgroundImage();
-  },[]);
+    bootstrap();
+  }, []);
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     init();
-  },[init]);
+  }, [init]);
 
   return <Desktop></Desktop>;
 };

@@ -1,0 +1,21 @@
+.browserContainer {
+  width: 100%;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.browserHeader {
+  width: 100%;
+  height: 30px;
+  display: flex;
+}
+
+.browserUrlInput {
+  flex: 1;
+}
+
+.browserContent {
+  width: 100%;
+  flex: 1;
+}
