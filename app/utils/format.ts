@@ -6,3 +6,7 @@ export const queryString = (obj: RequestParams) => {
     .join("&");
   return str;
 };
+
+export const toFixed = (num: number, fixed = 2) => {
+  return (num | 0).toString().padStart(fixed, "0");
+};

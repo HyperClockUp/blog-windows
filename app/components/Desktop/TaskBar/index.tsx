@@ -8,6 +8,7 @@ import { rootProcess } from "../../../features/core/Process";
 import { setShowWindowsMenu } from "../../../features/settings/SettingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { classNameJoiner } from "../../../utils";
+import { toFixed } from "../../../utils/format";
 import WindowsMenu from "../../WindowsMenu";
 import styles from "./index.css";
 
@@ -35,7 +36,10 @@ const TaskBar = () => {
     let maxZIndex = 0;
     let targetProcess = rootProcess;
     AllProcesses.forEach((process) => {
-      if (windowsStates[process.id]?.zIndex > maxZIndex && windowsStates[process.id]?.visible) {
+      if (
+        windowsStates[process.id]?.zIndex > maxZIndex &&
+        windowsStates[process.id]?.visible
+      ) {
         maxZIndex = windowsStates[process.id].zIndex;
         targetProcess = process;
       }
@@ -45,13 +49,14 @@ const TaskBar = () => {
 
   const updateTime = React.useCallback(() => {
     const newTime = new Date();
-    const hours = newTime.getHours();
-    const minutes = newTime.getMinutes();
+    const hours = toFixed(newTime.getHours(), 2);
+    const minutes = toFixed(newTime.getMinutes(), 2);
     // const seconds = newTime.getSeconds();
     const timeString = `${hours}:${minutes}`;
-    const dateString = `${newTime.getFullYear()}/${
-      newTime.getMonth() + 1
-    }/${newTime.getDate()}`;
+    const year = newTime.getFullYear();
+    const month = newTime.getMonth()+ 1;
+    const day = newTime.getDate();
+    const dateString = `${year}/${month}/${day}`;
     setTimes(`${timeString}\n${dateString}`);
   }, []);
 
