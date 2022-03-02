@@ -5,21 +5,20 @@ import { Application } from "../../types/Application";
 
 const context: Context = [
   {
-    title: "打开百度",
-    handler: () => window.open("https://www.baidu.com", "_blank"),
+    title: "打开博客后台",
+    handler: () => window.open("https://blog.chengfeixiang.cn/admin", "_blank"),
   },
 ];
 
 const App = Loadable({
-  loader: () =>
-    import(/* webpackChunkName: 'SystemBrowserRenderer'*/ "./render"),
+  loader: () => import(/* webpackChunkName: 'BlogRenderer'*/ "./render"),
   loading: () => <div>Loading...</div>,
 });
 
-const SystemBrowserApp: Application = {
+const BlogAdminApp: Application = {
   app: <App />,
   context,
   handler: console.log,
 };
 
-export default SystemBrowserApp;
+export default BlogAdminApp;

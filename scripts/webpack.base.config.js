@@ -61,61 +61,62 @@ module.exports = {
   },
   module: {
     rules: [{
-        test: /\.css$/,
-        use: [...getCSSLoaders()],
-      },
-      {
-        test: /\.s(a|c)ss$/,
-        use: [
-          ...getCSSLoaders(),
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: isDevelopment,
-            }
+      test: /\.css$/,
+      use: [...getCSSLoaders()],
+    },
+    {
+      test: /\.s(a|c)ss$/,
+      use: [
+        ...getCSSLoaders(),
+        {
+          loader: 'sass-loader',
+          options: {
+            sourceMap: isDevelopment,
           }
-        ]
-      },
-      {
-        test: /\.(tsx?|js)$/,
-        loader: 'babel-loader',
-        options: { cacheDirectory: true, plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean) },
-        exclude: /node_modules/,
-      },
-      {
-        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-        type: 'asset',
-        parser: {
-          dataUrlCondition: {
-            maxSize: 4 * 1024,
-          },
+        }
+      ]
+    },
+    {
+      test: /\.(tsx?|js)$/,
+      loader: 'babel-loader',
+      options: { cacheDirectory: true, plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean) },
+      exclude: /node_modules/,
+    },
+    {
+      test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+      type: 'asset',
+      parser: {
+        dataUrlCondition: {
+          maxSize: 4 * 1024,
         },
       },
-      {
-        test: /\.(eot|svg|ttf|woff|woff2?|md)$/,
-        type: 'asset/resource',
-      },
+    },
+    {
+      test: /\.(eot|svg|ttf|woff|woff2?|md)$/,
+      type: 'asset/resource',
+    },
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "React Windows",
+      title: "Web Windows ——by chengfx",
+      favicon: path.resolve(PROJECT_PATH, './public', './favicon.ico'),
       template: path.resolve(PROJECT_PATH, './public', './index.html')
     }),
-    new CopyPlugin({
-      patterns: [{
-        from: "*",
-        to: path.resolve(PROJECT_PATH, './dist/public'),
-        globOptions: {
-          dot: true,
-          gitignore: true,
-          ignore: ["**/index.html"],
-        },
-      }, ],
-      options: {
-        concurrency: 100,
-      },
-    }),
+    // new CopyPlugin({
+    //   patterns: [{
+    //     from: "*",
+    //     to: path.resolve(PROJECT_PATH, './dist/public'),
+    //     globOptions: {
+    //       dot: true,
+    //       gitignore: true,
+    //       ignore: ["**/index.html"],
+    //     },
+    //   }, ],
+    //   options: {
+    //     concurrency: 100,
+    //   },
+    // }),
     new CleanWebpackPlugin(),
   ],
   cache: {

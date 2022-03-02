@@ -1,0 +1,6 @@
+.blogAdminContainer{
+  width: 100%;
+  height: 50vh;
+  overflow: auto;
+  border: none;
+}

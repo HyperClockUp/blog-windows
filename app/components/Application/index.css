@@ -21,6 +21,7 @@
 .headerTitle {
   flex-grow: 1;
   flex-shrink: 1;
+  font-size: 12px;
 }
 
 .headerButtons {

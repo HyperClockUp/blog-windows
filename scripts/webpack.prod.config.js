@@ -13,6 +13,7 @@ module.exports = merge(baseWebpackConfig, {
   devtool: false,
   output: {
     filename: 'js/[name].[contenthash:8].js',
+    chunkFilename: 'js/[name].[contenthash:8].chunk.js',
     path: path.resolve(PROJECT_PATH, './dist'),
     assetModuleFilename: 'assets/[name].[contenthash:8].[ext]',
   },
@@ -23,6 +24,10 @@ module.exports = merge(baseWebpackConfig, {
     }),
   ],
   optimization: {
+    runtimeChunk: "single",
+    splitChunks: {
+      chunks: "all",
+    },
     minimize: true,
     minimizer: [
       new CSSMinimizerPlugin(),

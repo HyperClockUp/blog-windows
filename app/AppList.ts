@@ -9,6 +9,12 @@ import browser from "./applications/SystemBrowser";
 import todoIcon from "./assets/images/todo.svg";
 import todo from "./applications/TODO";
 
+import blogIcon from "./assets/images/blog.svg";
+import blog from "./applications/Blog";
+
+import blogAdminIcon from "./assets/images/admin.svg";
+import blogAdmin from "./applications/BlogAdmin";
+
 const ids = (() => {
   let _id = 1;
   return () => {
@@ -41,10 +47,30 @@ export const TodoProgram: Program = {
   app: todo,
 };
 
+export const BlogProgram: Program = {
+  id: ids(),
+  name: "blog",
+  title: "Cheng's blog",
+  icon: blogIcon,
+  app: blog,
+};
+
+export const BlogAppProgram: Program = {
+  id: ids(),
+  name: "blog-admin",
+  title: "Cheng's blog admin",
+  icon: blogAdminIcon,
+  app: blogAdmin,
+};
+
+
+
 const AppList: Record<string, Program> = {
   [SystemSettingsProgram.name]: SystemSettingsProgram,
   [SystemBrowserProgram.name]: SystemBrowserProgram,
   [TodoProgram.name]: TodoProgram,
+  [BlogProgram.name]: BlogProgram,
+  [BlogAppProgram.name]: BlogAppProgram,
 };
 
 export default AppList;
