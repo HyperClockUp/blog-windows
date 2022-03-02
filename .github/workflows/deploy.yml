@@ -37,7 +37,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
           REMOTE_USER: ${{ secrets.SSH_NAME }}
           REMOTE_HOST: ${{ secrets.REMOTE_ADDRESS }}
-          SOURCE: ./dist
+          SOURCE: ${{ secrets.DIST_PATH }}
           TARGET: ${{ secrets.DEPLOY_PATH }}
 
       # Done
