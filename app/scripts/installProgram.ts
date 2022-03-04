@@ -1,4 +1,4 @@
-import { TodoProgram, SystemBrowserProgram, SystemSettingsProgram, BlogProgram, BlogAppProgram } from "./../AppList";
+import { TodoProgram, SystemBrowserProgram, SystemSettingsProgram, BlogProgram, BlogAdminProgram, ResumeProgram } from "./../AppList";
 import { batchInstallProgram } from "../features/core/CoreSlice";
 import { store } from "./../store";
 
@@ -12,7 +12,8 @@ export const initInstallProgram = () => {
       SystemBrowserProgram,
       TodoProgram,
       BlogProgram,
-      BlogAppProgram,
+      BlogAdminProgram,
+      ResumeProgram
     ])
   );
 };

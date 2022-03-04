@@ -15,6 +15,9 @@ import blog from "./applications/Blog";
 import blogAdminIcon from "./assets/images/admin.svg";
 import blogAdmin from "./applications/BlogAdmin";
 
+import resumeIcon from "./assets/images/resume.svg";
+import resume from "./applications/Resume";
+
 const ids = (() => {
   let _id = 1;
   return () => {
@@ -55,13 +58,22 @@ export const BlogProgram: Program = {
   app: blog,
 };
 
-export const BlogAppProgram: Program = {
+export const BlogAdminProgram: Program = {
   id: ids(),
   name: "blog-admin",
   title: "Cheng's blog admin",
   icon: blogAdminIcon,
   app: blogAdmin,
 };
+
+export const ResumeProgram: Program = {
+  id: ids(),
+  name: "resume",
+  title: "Resume",
+  icon: resumeIcon,
+  app: resume,
+};
+
 
 
 
@@ -70,7 +82,8 @@ const AppList: Record<string, Program> = {
   [SystemBrowserProgram.name]: SystemBrowserProgram,
   [TodoProgram.name]: TodoProgram,
   [BlogProgram.name]: BlogProgram,
-  [BlogAppProgram.name]: BlogAppProgram,
+  [BlogAdminProgram.name]: BlogAdminProgram,
+  [ResumeProgram.name]: ResumeProgram,
 };
 
 export default AppList;

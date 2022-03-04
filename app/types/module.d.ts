@@ -39,6 +39,11 @@ declare module '*.css' {
 }
 
 declare module '*.md' {
-  const content: { [className: string]: string };
-  export default content;
+  const path: string;
+  export default path;
+}
+
+declare module '*.pdf' {
+  const path: string;
+  export default path;
 }
