@@ -10,11 +10,18 @@ import {
 import { store } from "./store";
 import RouteList from "./router";
 import "./global.css";
-import { checkAuth } from "./utils/auth";
+import { checkAuth, checkMobile } from "./utils/auth";
 
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const auth = checkAuth();
   const location = useLocation();
+  const isMobile = checkMobile();
+
+  if (location.pathname !== RouteList.MOBILE.path && isMobile) {
+    return (
+      <Navigate to={RouteList.MOBILE.path} state={{ from: location }} replace />
+    );
+  }
 
   if (!auth) {
     // Redirect them to the /login page, but save the current location they were
