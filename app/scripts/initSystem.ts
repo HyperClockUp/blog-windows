@@ -10,7 +10,7 @@ export const initBackgroundImage = async () => {
       token: commonAPIToken,
       format: "json",
     });
-    return res.img_url;
+    return res.data.img;
   };
 
   const timeoutLocalBg = new Promise((res, rej) => {

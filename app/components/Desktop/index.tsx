@@ -9,6 +9,7 @@ import { Program } from "../../types/Program";
 import { createParentProcess } from "../../features/core/CoreSlice";
 import Application from "../Application";
 import AppList from "../../AppList";
+import { typedKeys } from "../../utils";
 
 const Desktop = () => {
   const dispatch = useAppDispatch();
@@ -42,12 +43,12 @@ const Desktop = () => {
     React.useState<boolean>(false);
 
   // appIcon的DOM列表
-  const appIconDOMRefList = React.useRef<Record<string, HTMLDivElement | null>>(
+  const appIconDOMRefList = React.useRef<Record<number, HTMLDivElement | null>>(
     {}
   );
 
   // appIcon的位置列表
-  const appIconBoundingList = React.useRef<Record<string, DOMRect>>({});
+  const appIconBoundingList = React.useRef<Record<number, DOMRect>>({});
 
   // 已经安装的程序列表
   const installedProgramList = React.useMemo(() => {
@@ -73,21 +74,33 @@ const Desktop = () => {
    */
   const selectionHandler = React.useCallback((rect) => {
     const activeApp: Program["id"][] = [];
-    Reflect.ownKeys(appIconBoundingList.current).forEach((programId) => {
-      const appRect = appIconBoundingList.current[programId as string];
-      const minX = Math.max(appRect.left, rect.left);
-      const minY = Math.max(appRect.top, rect.top);
-      const maxX = Math.min(
-        appRect.right,
-        document.body.clientWidth - (rect.left + rect.width)
-      );
-      const maxY = Math.min(
-        appRect.bottom,
-        document.body.clientHeight - (rect.top + rect.height)
-      );
+    typedKeys(appIconBoundingList.current).forEach((programId) => {
+      const appRect = appIconBoundingList.current[programId];
+      // 判断是否在选中框内
+      if (
+        appRect.left >= rect.left &&
+        appRect.top >= rect.top &&
+        appRect.right <= rect.left + rect.width &&
+        appRect.bottom <= rect.top + rect.height
+      ) {
+        activeApp.push(Number(programId));
+        return;
+      }
 
-      if (maxX > minX && maxY > minY) {
-        activeApp.push(Number(programId) as Program["id"]);
+      // 判断是否与选中框相交，并且相交面积大于15%
+      const intersection = {
+        left: Math.max(appRect.left, rect.left),
+        top: Math.max(appRect.top, rect.top),
+        right: Math.min(appRect.right, rect.left + rect.width),
+        bottom: Math.min(appRect.bottom, rect.top + rect.height),
+      };
+      const intersectionArea =
+        (intersection.right - intersection.left) *
+        (intersection.bottom - intersection.top);
+      const appArea = (appRect.right - appRect.left) * (appRect.bottom - appRect.top);
+      if (intersectionArea / appArea > 0.15) {
+        activeApp.push(Number(programId));
+        return;
       }
     });
     setActiveProgram(activeApp);
@@ -101,10 +114,10 @@ const Desktop = () => {
       return (
         <div
           ref={(ref) => {
-            const programIdStr = program.id.toString();
-            appIconDOMRefList.current[programIdStr] = ref;
+            const programId = program.id;
+            appIconDOMRefList.current[programId] = ref;
             if (ref) {
-              appIconBoundingList.current[programIdStr] =
+              appIconBoundingList.current[programId] =
                 ref.getBoundingClientRect();
             }
           }}

@@ -20,9 +20,7 @@ module.exports = {
   plugins: ['react', '@typescript-eslint', 'react-hooks'],
   rules: {
     "semi": ['error', 'always'],
-    "indent": [2, 2, {
-      'SwitchCase': 1
-    }],
+    "indent": ['error', 2],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'react/no-unescaped-entities': 'off'

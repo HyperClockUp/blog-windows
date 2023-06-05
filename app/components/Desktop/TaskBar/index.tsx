@@ -11,6 +11,7 @@ import { classNameJoiner } from "../../../utils";
 import { toFixed } from "../../../utils/format";
 import WindowsMenu from "../../WindowsMenu";
 import styles from "./index.css";
+import Registration from "../../Registration";
 
 const TaskBar = () => {
   const dispatch = useAppDispatch();
@@ -54,7 +55,7 @@ const TaskBar = () => {
     // const seconds = newTime.getSeconds();
     const timeString = `${hours}:${minutes}`;
     const year = newTime.getFullYear();
-    const month = newTime.getMonth()+ 1;
+    const month = newTime.getMonth() + 1;
     const day = newTime.getDate();
     const dateString = `${year}/${month}/${day}`;
     setTimes(`${timeString}\n${dateString}`);
@@ -85,8 +86,8 @@ const TaskBar = () => {
               className={classNameJoiner(
                 styles.taskItem,
                 activeProcess.id === process.id &&
-                  windowState.visible &&
-                  styles.activeTaskItem
+                windowState.visible &&
+                styles.activeTaskItem
               )}
               key={process.id}
               onClick={() => {
@@ -104,6 +105,7 @@ const TaskBar = () => {
           );
         })}
       </div>
+      <Registration />
       <span className={styles.timeContainer}>{time}</span>
     </div>
   );

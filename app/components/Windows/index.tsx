@@ -15,7 +15,7 @@ const Windows = () => {
     init();
   }, [init]);
 
-  return <Desktop></Desktop>;
+  return <Desktop />;
 };
 
 export default Windows;
